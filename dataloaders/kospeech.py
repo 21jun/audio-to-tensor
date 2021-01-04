@@ -49,7 +49,7 @@ class KoSpeechDataSet(Dataset):
 
 class KoSpeechDataModule(pl.LightningDataModule):
 
-    def __init__(self, data_root="../data/KoSpeech/sub1", data_list_url="../data/KoSpeech/KsponSpeech.json", batch_size=8):
+    def __init__(self, data_root="data/KoSpeech/sub1", data_list_url="data/KoSpeech/KsponSpeech.json", batch_size=8):
         self.batch_size = batch_size
         self.data_root = data_root
         self.data_list_url = data_list_url
@@ -109,23 +109,21 @@ class KoSpeechDataModule(pl.LightningDataModule):
 def main():
 
     pl.seed_everything(777)
-    parser = argparse.ArgumentParser(description="LIBRISPEECH")
-    parser.add_argument('--train-url', type=str, default="train-clean-100")
-    parser.add_argument('--test-url', type=str, default="test-clean")
+    parser = argparse.ArgumentParser(description="KoSpeech")
+
     parser.add_argument('--batch-size', type=int, default=8)
-    parser.add_argument('--download-path', type=str,
-                        default="./data/librispeech")
+
     args = parser.parse_args()
 
-    dm = KoSpeechDataModule(args.batch_size)
+    dm = KoSpeechDataModule(batch_size=args.batch_size)
     dm.setup()
 
     train = dm.train_dataloader()
 
     print(train)
 
-    for a in train:
-        print(a)
+    for a, b, c in train:
+        print(b[1].size())
         break
 
 
